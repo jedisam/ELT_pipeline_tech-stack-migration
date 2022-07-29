@@ -1,0 +1,22 @@
+scalable_dwh_migration:
+  target: dev
+  outputs:
+    dev:
+      type: mysql
+      server: "{{ env_var('DB_SERVER') }}"
+      port: "{{ env_var('DB_PORT') }}"
+      schema: "{{ env_var('DB_SCHEMA') }}"
+      username: "{{ env_var('DB_USERNAME') }}"
+      password: "{{ env_var('DB_PASSWORD') }}"
+      ssl_disabled: True
+    
+    prod:
+      type: mysql
+      server: "{{ env_var('DB_SERVER_PROD') }}"
+      port: "{{ env_var('DB_PORT_PROD') }}"
+      schema: "{{ env_var('DB_SCHEMA_PROD') }}"
+      username: "{{ env_var('DB_USERNAME_PROD') }}"
+      password: "{{ env_var('DB_PASSWORD_PROD') }}"
+      ssl_disabled: True
+
+  target: dev
