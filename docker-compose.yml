@@ -33,6 +33,40 @@ services:
         volumes:
             - ./data:/var/lib/mysql-files/
             - ./mysql.cnf:/etc/mysql/mysql.cnf 
+  dbt-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dbt
+    command: [ "dbt-rpc", "serve" ]
+    env_file: .env
+    environment:
+      - DBT_ENABLE_LEGACY_LOGGER=True
+    ports:
+      - '8581:8580'
+    
+    depends_on:
+      - mysql
+      - postgres
+
+    volumes:
+      - ./scalable_dwh_migration_dbt:/app
+
+
+  dbt-console:
+    build:
+      context: .
+      dockerfile: Dockerfile.dbt
+    command: [ "/bin/bash" ]
+    env_file: .env
+    stdin_open: true
+    tty: true
+    depends_on:
+      - mysql
+      - postgres
+    ports:
+      - '8001:8001'
+    volumes:
+      - ./scalable_dwh_migration_dbt:/app
   postgres:
     image: postgres:13
     environment:
