@@ -6,6 +6,7 @@ from airflow.operators.mysql_operator import MySqlOperator
 from airflow.utils.dates import datetime
 from airflow.utils.dates import timedelta
 from airflow.utils.dates import days_ago
+from airflow.operators.email_operator import EmailOperator
 
 default_args = {
     "owner": "jedisam",
@@ -59,4 +60,11 @@ load_data = MySqlOperator(
     dag=dag_exec_scripts,
 )
 
-create_db >> create_schema >> create_table >> load_data
+email = EmailOperator(
+    to="yidisam18@gmail.com",
+    subject="Data migrated successfully",
+    html_content="<h3>Data migrated successfully</h3>",
+)
+
+
+create_db >> create_schema >> create_table >> load_data >> email
