@@ -15,7 +15,7 @@
 
 ## About
 <!-- import an image -->
-![flow-diagram](./screenshots/flow_fin.png)
+![flow-diagram](./images/workflow.png)
 
 An ELT pipeline that can be used to process data from a variety of sources. The pipeline is designed to be scalable and easy to use. The pipeline is designed to be used in a variety of environments like Data Warehouse. It can be used by analytic engineers in the different department setup transformation workflows on a need basis. 
 
@@ -32,7 +32,7 @@ The [Data](https://www.kaggle.com/c/rossmann-store-sales/data) used for this pro
         ├── dags  (airflow scripts containing the dags)
         ├── .github  (github workflows for CI/CD, CML)
         ├── screenshots  (Important screenshots)
-        ├── scalable_dwh  (dbt configrations and models)
+        ├── scalable_dwh_migration_dbt (dbt configrations and models)
         ├── data    (contains data)
         ├── superset  (contains superset's configuration)
         ├── scripts (contains the main script)	
