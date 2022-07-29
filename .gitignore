@@ -1,0 +1,4 @@
+.env
+airflow/dags/__pycache__
+docker-compose2.yml
+airflow/logs

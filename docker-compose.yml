@@ -20,35 +20,19 @@ x-airflow-common:
   depends_on:
     redis:
       condition: service_healthy
-    mysql:
+    postgres:
       condition: service_healthy
 
 services:
   mysql:
-    image: mysql:5.7
-    container_name: airflow-mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: airflow
-      MYSQL_DATABASE: airflow
-      MYSQL_USER: airflow
-      MYSQL_PASSWORD: airflow
-      MYSQL_HOST: mysql
-      MYSQL_PORT: 3306
-      MYSQL_PROTOCOL: tcp
-      MYSQL_CONNECT_TIMEOUT: 10
-      MYSQL_READ_TIMEOUT: 10
-      MYSQL_WRITE_TIMEOUT: 10
-      MYSQL_WAIT_TIMEOUT: 10
-      MYSQL_MAX_ALLOWED_PACKET: 16777216
-      MYSQL_CHARSET: utf8mb4
-      MYSQL_COLLATION: utf8mb4_unicode_ci  
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./mysql.cnf:/var/lib/mysql
-      - ./data:/var/lib/mysql-files/
-    user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
-
+        image: mysql:5.7.27
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./data:/var/lib/mysql-files/
+            - ./mysql.cnf:/etc/mysql/mysql.cnf 
   postgres:
     image: postgres:13
     environment:
@@ -59,7 +43,6 @@ services:
       - "5432:5432"
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
-      - ./data/location_mod.csv:/var/lib/postgresql/data/location_mod.csv
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "airflow"]
       interval: 5s
