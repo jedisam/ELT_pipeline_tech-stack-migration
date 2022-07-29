@@ -67,6 +67,16 @@ services:
       - '8001:8001'
     volumes:
       - ./scalable_dwh_migration_dbt:/app
+
+  superset:
+    image: tylerfowler/superset
+    container_name: superset
+    restart: always
+    environment:
+      MAPBOX_API_KEY: ${MAPBOX_API_KEY}
+    ports:
+      - "8088:8088"
+      
   postgres:
     image: postgres:13
     environment:
