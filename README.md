@@ -63,25 +63,39 @@ Steps to setup the project:
 1. create a .env file and add the required configurations
   ```
 
-AIRFLOW_UID=<your_uid>
-AIRFLOW_GID=<your_gid>
 DB_HOST_DEV=<your_db_host>
 DB_PORT_DEV=<your_db_port>
 DB_USER_DEV=<your_db_user>
 DB_PASSWORD_DEV=<your_db_password>
 DB_NAME_DEV=<your_db_name>
+```
 
+2. create another environment file and add the required configurations for airflow
+```
 <!-- AIRflow -->
-SMTP_HOST=<your_smtp_host>
-SMTP_PORT=<your_smtp_port>
-SMTP_USER=<your_smtp_user>
-SMTP_PASSWORD=<your_smtp_password>
+AIRFLOW_UID=<your_uid>
+AIRFLOW_GID=<your_gid>
+&airflow-common-env
+AIRFLOW__CORE__EXECUTOR=CeleryExecutor
+AIRFLOW__CORE__SQL_ALCHEMY_CONN=<db_host>:<db_port>/<db_name>
+AIRFLOW__CELERY__RESULT_BACKEND=db+postgresql://<db_user>:<db_password>@<db_host>:<db_port>/<db_name>
+AIRFLOW__CELERY__BROKER_URL=redis://:@redis:6379/0
+AIRFLOW__CORE__FERNET_KEY=''
+AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION='true'
+AIRFLOW__CORE__LOAD_EXAMPLES='true'
+AIRFLOW__API__AUTH_BACKEND='airflow.api.auth.backend.basic_auth'
+AIRFLOW__SMTP__SMTP_HOST=smtp.gmail.com
+AIRFLOW__SMTP__SMTP_USER=<your_email>
+AIRFLOW__SMTP__SMTP_PASSWORD=<your_password>
+AIRFLOW__SMTP__SMTP_PORT=587
+AIRFLOW__SMTP__SMTP_MAIL_FROM=Airflow
+```
+If you want to use service other than gmail, you can change the smtp host and port.
 
-  ```
-2. Run `docker-compose up airflow-init` to initialize airflow user.
-3. Run `docker-compose up -d` to start the project and visit localhost:8080 in your browser to access airflow admin.
-4. Run `docker exec <dbt-cli-id> /bin/bash` to execute dbt commands.
-5. Run `docker-compose down` to stop the project.
+3. Run `docker-compose up airflow-init` to initialize airflow user.
+4. Run `docker-compose up -d` to start the project and visit localhost:8080 in your browser to access airflow admin.
+5. Run `docker exec <dbt-cli-id> /bin/bash` to execute dbt commands.
+6. Run `docker-compose down` to stop the project.
 
 ## Contrbutors
 - Yididiya Samuel
